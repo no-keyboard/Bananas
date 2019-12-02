@@ -1,2 +1,2 @@
 # monkey
-javascript
+Tampermonkey Scripts
