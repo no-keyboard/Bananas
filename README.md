@@ -1,2 +1,2 @@
-# Bananas
-Tampermonkey Scripts
+# Scripts
+Nothing productive here!
