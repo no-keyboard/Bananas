@@ -8,20 +8,20 @@
 // @grant        none
 // ==/UserScript==
 
-var loggedInLink = document.querySelector("#myUserInfo > a");
-var hoverText = String(loggedInLink.onmouseover);
-var instance = hoverText.substring(
-						hoverText.lastIndexOf("<br/>Instance:") + 15,
-						hoverText.lastIndexOf("<br/>Org Id:")
-						);
-loggedInLink.innerHTML = "FYI, YOU'RE LOGGED IN HERE: " + instance.bold();
-loggedInLink.style.color = "#ff0000";
-loggedInLink.style.fontSize = "large";
-
 if(window.location.href === "https://workbench.developerforce.com/login.php") {
 	document.querySelector("#oauth_env").value = 'test.salesforce.com';
 	document.querySelector("#termsAccepted").checked = true;
 	document.querySelector("#loginBtn").click();
+} else {
+	var loggedInLink = document.querySelector("#myUserInfo > a");
+	var hoverText = String(loggedInLink.onmouseover);
+	var instance = hoverText.substring(
+						hoverText.lastIndexOf("<br/>Instance:") + 15,
+						hoverText.lastIndexOf("<br/>Org Id:")
+						);
+	loggedInLink.innerHTML = "FYI, YOU'RE LOGGED IN HERE: " + instance.bold();
+	loggedInLink.style.color = "#ff0000";
+	loggedInLink.style.fontSize = "large";
 }
 
 if(window.location.href.indexOf("https://workbench.developerforce.com/metadataDescribeAndList.php") > -1) {
