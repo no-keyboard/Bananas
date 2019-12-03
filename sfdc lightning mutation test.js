@@ -19,8 +19,22 @@ var onMutate = function(mutationsList) {
 	mutationsList.forEach(mutation => {
 		if(mutation.target.className === 'modal-container slds-modal__container') {
 			var element = mutation.target;
-			console.log(mutation.target.querySelector(div.));
-			console.log(element.className);
+			var modalBody = element.querySelector('.modal-body');
+
+			//using the console to drill down to where the fields are. it's saying to go into the modal body and get me the first div and within that, the first article, and within that, the first div with that class, etc.
+			var modalPageLayout = modalBody.querySelector('div > article > div.test-id__record-layout-container.riseTransitionEnabled > div');
+
+			//console.log(mutation.target.querySelector('.modal-header.slds-modal__header'));
+            //console.log(mutation.target.querySelector('.modal-header'));
+			//console.log(element.className);
+            //console.log(element.children);
+            //console.log(mutation.target.querySelector('.modal-body'));
+
+            //see what page layout sections are available
+            console.log(modalPageLayout.children);
+
+            //selecting the section within the page layout
+            console.log(modalPageLayout.querySelector('div'));
 
 		}
 	});
