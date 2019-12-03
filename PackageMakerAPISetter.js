@@ -22,6 +22,10 @@ if(window.location.href === "https://workbench.developerforce.com/login.php") {
 	loggedInLink.innerHTML = "FYI, YOU'RE LOGGED IN HERE: " + instance.bold();
 	loggedInLink.style.color = "#ff0000";
 	loggedInLink.style.fontSize = "large";
+
+	setInterval(function() {
+		loggedInLink.style.opacity = (loggedInLink.style.opacity == '100' ? '0' : '100');
+	}, 600);
 }
 
 if(window.location.href.indexOf("https://workbench.developerforce.com/metadataDescribeAndList.php") > -1) {
