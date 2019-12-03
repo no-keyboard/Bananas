@@ -4,35 +4,49 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        https://workbench.developerforce.com/metadataDescribeAndList.php*
+// @match        https://workbench.developerforce.com/*
 // @grant        none
 // ==/UserScript==
 
-var xml;
+if(window.location.href === "https://workbench.developerforce.com/login.php") {
+	document.querySelector("#oauth_env").value = 'test.salesforce.com';
+	document.querySelector("#termsAccepted").checked = true;
+	document.querySelector("#loginBtn").click();
+}
 
-setTimeout(function() {
-    xml = document.querySelector("#xmlResult");
-    //console.log(xml.innerHTML);
-    document.querySelector("#selectText").onclick = function() {
-    	xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;46.0");
-        xml.focus();
-    	xml.select();
-    };
-    //xml.onclick = function() { xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;46.0"); };
-}, 2000);
+if(window.location.href === "https://workbench.developerforce.com/select.php") {
+	var loggedInLink = document.querySelector("#myUserInfo > a");
+	var hoverText = String(loggedInLink.onmouseover);
+	var instance = hoverText.substring(
+							hoverText.lastIndexOf("<br/>Instance:") + 15,
+							hoverText.lastIndexOf("<br/>Org Id:")
+							);
+	loggedInLink.innerHTML = "FYI, YOU'RE LOGGED IN HERE: " + instance.bold();
+	loggedInLink.style.color = "#ff0000";
+}
 
-// function test() {
-//     console.log("test");
-//     xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;46.0");
-// }
+if(window.location.href === "https://workbench.developerforce.com/metadataDescribeAndList.php") {
+	const container = document.querySelector('body');
+	const mutationConfig = {
+		attributes: false,
+		childList: true,
+		subtree: true,
+		characterData: false,
+		characterDataOldValue: false
+	};
 
-// setTimeout(function() {
-// 	document.addEventListener("click", function(event) {
-//     console.log(event.target);
+	var onChange = function(mutationsList) {
+		for(var i = 0; i < mutationsList.length; i++) {
+			if(mutationsList[i].target.id === 'xmlResult') {
+				let xml = mutationsList[i].target;
+				if(xml.innerHTML.includes("version&gt;34.0")) {
+					//console.log(xml.innerHTML);
+					xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;46.0");
+				}
+			}
+		}
+	}
 
-// 	if(event.target.id == 'issuetype-field') {
-// 	    //console.log(event.target.value);
-// 	}
-// 	});
-// }, 2000);
-
+	var observer = new MutationObserver(onChange);
+	observer.observe(container, mutationConfig);
+}
