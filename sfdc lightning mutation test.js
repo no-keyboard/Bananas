@@ -15,6 +15,9 @@ const container = document.querySelector('html body.desktop div.desktop.containe
 const mutationConfig = { attributes: false, childList: true, subtree: true, characterData: false,
     characterDataOldValue: false };
 
+var whatField = "Language";
+var fieldSet;
+
 var onMutate = function(mutationsList) {
 	mutationsList.forEach(mutation => {
 		if(mutation.target.className === 'modal-container slds-modal__container') {
@@ -31,11 +34,35 @@ var onMutate = function(mutationsList) {
             //console.log(mutation.target.querySelector('.modal-body'));
 
             //see what page layout sections are available
-            console.log(modalPageLayout.children);
+            //console.log(modalPageLayout.children);
 
             //selecting the section within the page layout
-            console.log(modalPageLayout.querySelector('div'));
+            var modalPageSection = modalPageLayout.children[0];
+            //console.log(modalPageSection);
 
+            //fields in page section
+            var fields = modalPageSection.querySelector('div > div > div > div > div').children;
+            //console.log(fields);
+
+            for(let i = 0; i < fields.length; i++) {
+            	let field = fields[i].querySelector('div > div > div > div > div > div > div > div > div > div');
+
+            	if(field.querySelector('span').innerText === whatField) {
+                    console.log(field);
+                    fieldSet = field;
+                }
+            }
+
+            // fields.forEach((field, index) => {
+            // 	console.log(field);
+            // });
+
+            //field label and field
+            // var labelAndField = fields[1].querySelector('div > div > div > div > div > div > div > div > div > div');
+            // console.log(labelAndField);
+
+            //console.log(labelAndField.querySelector('span[class*=label]'));
+            // console.log(labelAndField.querySelector('span[innerText=Language]'));
 		}
 	});
 };
