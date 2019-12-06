@@ -48,10 +48,15 @@ var onMutate = function(mutationsList) {
             	let field = fields[i].querySelector('div > div > div > div > div > div > div > div > div > div');
 
             	if(field.querySelector('span').innerText === whatField) {
-                    console.log(field);
+                    //console.log(field);
                     fieldSet = field;
+                    break;
                 }
             }
+
+            console.log(fieldSet.children[1]);
+
+            fieldSet.children[1].innerText = 'asdf';
 
             // fields.forEach((field, index) => {
             // 	console.log(field);
