@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        https://abcwebrepo.amerisourcebergen.com/projects/DAT/repos/client-gskpap/commits/*
+
 // @grant        none
 // ==/UserScript==
 
