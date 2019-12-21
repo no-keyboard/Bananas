@@ -21,7 +21,6 @@ if(window.location.href === "https://www.cargurus.com/") {
 	const zip = document.querySelector("#dealFinderZipUsedId_dealFinderForm");
 	const zipValue = '11214'
 	var modelVals;
-
 	var makeIndex;
 	var modelIndex;
 
@@ -88,5 +87,5 @@ if(window.location.href.indexOf("https://www.cargurus.com/Cars/inventorylisting/
 }
 
 if(window.location.href.indexOf("https://www.cargurus.com/Cars/inventorylisting/") > -1 && window.location.href.indexOf("#listing=") > -1) {
-	
+
 }
