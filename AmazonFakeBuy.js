@@ -18,7 +18,9 @@ buyButton.addEventListener('click', event => {
 	event.preventDefault();
 	//disables any popups that might come up after clicking buy
 	event.stopPropagation();
-	productContainer.prepend(populateNotification());
+	setTimeout(() => {
+		productContainer.prepend(populateNotification());
+	}, 1000);
 });
 
 const populateNotification = element => {
@@ -84,7 +86,7 @@ const populateNotification = element => {
 	//item list
 	let itemList = document.createElement('ul');
 	itemList.className = 'a-unordered-list a-vertical';
-	itemList.append(createLineItem(productName, customerName));
+	itemList.append(createLineItem(productNameFormatter(productName), customerName));
 	column.append(itemList);
 
 	//review edit order link
@@ -105,6 +107,14 @@ const populateNotification = element => {
 	return purchaseNotification;
 }
 
+const productNameFormatter = productName => {
+	if(productName.length > 29) {
+		return productName.substring(0,29) + '...';
+	} else {
+		return productName;
+	}
+}
+
 const rng = (min, max) => {
 	return Math.floor((Math.random() * max) + min);
 }
@@ -117,12 +127,14 @@ const deliveryDateGen = () => {
 	};
 
 	let date1 = new Date();
-	let date2 = new Date().setDate(date1.getDate() + 2);
+	date1.setDate(date1.getDate() + 2);
+	let date2 = new Date();
+    date2.setDate(date1.getDate() + 2);
 
-	return date1 + ' - ' + date2;
+	return date1.toLocaleString('en-US', dateOptions) + ' - ' + date2.toLocaleString('en-US', dateOptions);
 }
- 
-const createDeliveryDate = () => {	
+
+const createDeliveryDate = () => {
 	let estDeliveryHeader = document.createElement('span');
 	estDeliveryHeader.className = 'a-text-bold';
 	estDeliveryHeader.innerHTML = 'Estimated Delivery: ';
