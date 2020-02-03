@@ -8,10 +8,23 @@
 // @grant        none
 // ==/UserScript==
 
+const key = event => {
+	return event.code;
+}
+
 if(window.location.href === "https://workbench.developerforce.com/login.php") {
+	let keyPressed;
 	document.querySelector("#oauth_env").value = 'test.salesforce.com';
 	document.querySelector("#termsAccepted").checked = true;
-	document.querySelector("#loginBtn").click();
+	document.addEventListener('keydown', event => {
+		keyPressed = key(event);
+	});
+
+	setTimeout(() => {
+		if(keyPressed !== "ControlLeft") {
+			document.querySelector("#loginBtn").click();
+		} 
+	}, 500); 
 } else {
 	var loggedInLink = document.querySelector("#myUserInfo > a");
 	var hoverText = String(loggedInLink.onmouseover);
@@ -44,7 +57,7 @@ if(window.location.href.indexOf("https://workbench.developerforce.com/metadataDe
 				let xml = mutationsList[i].target;
 				if(xml.innerHTML.includes("version&gt;34.0")) {
 					//console.log(xml.innerHTML);
-					xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;47.0");
+					xml.innerHTML = xml.innerHTML.replace("version&gt;34.0", "version&gt;46.0");
 				}
 			}
 		}
