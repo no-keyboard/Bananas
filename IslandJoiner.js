@@ -8,10 +8,7 @@
 // @grant        none
 // ==/UserScript==
 
-//PUT YOUR AC CHARACTER NAME HERE BETWEEN THE SINGLE QUOTES:
 const playerName = '';
-//===================================================
-
 const container = document.querySelector('body');
 const mutationConfig = {attributes: false,
                         childList: true,
