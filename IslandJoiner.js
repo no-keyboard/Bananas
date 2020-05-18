@@ -25,8 +25,10 @@ onMutate = mutationsList => {
 			let joinOpenBtn = findButton('Join this queue');
 			
 			if(joinOpenBtn) {
-				joinOpenBtn.click();
-				joinOpenBtnPressed = true;
+				setTimeout(() => {
+                    			joinOpenBtn.click();
+                    			joinOpenBtnPressed = true;
+                		}, 500);
 			}
 		}
 
