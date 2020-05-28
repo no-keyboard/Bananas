@@ -10,8 +10,8 @@
 
 ///////CONFIGURATION/////////
 const ACCEPT_NMT = true;
-const ACCEPT_BELLS = true;
-const ACCEPT_WISHLIST = true;
+const ACCEPT_BELLS = false;
+const ACCEPT_WISHLIST = false;
 /////////////////////////////
 
 const container = document.querySelector('body');
@@ -36,16 +36,18 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				listings.forEach(listing => {
 					let listingUrl = listing.childNodes[0].firstElementChild.href;
 					//console.log(listing);
+					let listingImg = listing.querySelector("div .listing-item-link > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "");
+					//console.log(listingImg);
 					let actionBtns = listing.querySelectorAll(".listing-action-bar > .listing-btn-container");
 					//console.log(removeBtn);
 					let relistBtn = document.createElement("button");
-					let urlAppend = `${listingUrl}?autolist`;
+					let urlAppend = `${listingUrl}?autolist&${listingImg}`;
 					let diyFlag = false;
 					let listingName = listing.querySelector("div > div > div .listing-product-info > div .listing-name").innerText;
 
 					if(listingName.indexOf("DIY Recipe") > -1) {
 						diyFlag = true;
-						urlAppend = urlAppend.concat("&diy");
+						urlAppend = urlAppend.concat(";diy");
 					}
 					
 					relistBtn.innerHTML = "Relist";
@@ -67,6 +69,8 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					if(listing.childNodes[1].childNodes.length === 2) {
 						listing.childNodes[1].append(relistBtn);
 					}
+
+					//console.log(urlAppend);
 					
 					listingUrls.push({
 						url: urlAppend,
@@ -99,10 +103,25 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				let listingBtn = productActionBar.firstChild.firstChild;
 				listingBtn.click();
 
+				let variants = document.querySelector(".product-variants").childNodes;
+				console.log(variants);
+
+				for (let i=0; i<variants.length; i++) {
+					variantUrl = variants[i].firstChild.src;
+					//console.log(variants[i].firstChild.src);
+					variantImg = window.location.href.split("&").pop().split(";")[0];
+					console.log(variantImg);
+					if(variantUrl.indexOf(variantImg) > -1) {
+						variants[i].click();
+						break;
+					}
+				}
+
 				if(window.location.href.indexOf("&diy") > -1) {
 					let diyCheck = document.querySelector(".create-listing-diy input");
 					diyCheck.click();
 				}
+
 				let pricingChecks = document.querySelectorAll(".product-pricing-option");
 				let createListingBtn = document.querySelector(".create-listing-btn");
 				
