@@ -8,6 +8,12 @@
 // @grant        none
 // ==/UserScript==
 
+///////CONFIGURATION/////////
+const ACCEPT_NMT = true;
+const ACCEPT_BELLS = true;
+const ACCEPT_WISHLIST = true;
+/////////////////////////////
+
 const container = document.querySelector('body');
 const mutationConfig = {attributes: false,
                         childList: true,
@@ -34,22 +40,37 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					//console.log(removeBtn);
 					let relistBtn = document.createElement("button");
 					let urlAppend = `${listingUrl}?autolist`;
+					let diyFlag = false;
+					let listingName = listing.querySelector("div > div > div .listing-product-info > div .listing-name").innerText;
+
+					if(listingName.indexOf("DIY Recipe") > -1) {
+						diyFlag = true;
+						urlAppend = urlAppend.concat("&diy");
+					}
 					
 					relistBtn.innerHTML = "Relist";
 					relistBtn.classList.add("btn-alt");
+					relistBtn.id = "relistBtn"
 					relistBtn.onclick = () => {
 						window.open(urlAppend, "_blank");
 						for(let i=0; i<actionBtns.length; i++) {
 							if(actionBtns[i].innerText === "Remove") {
 								console.log(actionBtns[i]);
+								//click the remove button
 								actionBtns[i].firstChild.click();
 								break;
 							}
 						}
 					}
-					listing.childNodes[1].append(relistBtn);
+
+					//console.log(listing.childNodes[1].childNodes.length);
+					if(listing.childNodes[1].childNodes.length === 2) {
+						listing.childNodes[1].append(relistBtn);
+					}
 					
-					listingUrls.push(urlAppend);
+					listingUrls.push({
+						url: urlAppend,
+						diy: diyFlag});
 				});
 
 				//console.log(listingUrls);
@@ -67,23 +88,23 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					});
 				}
 
-				listingTable.prepend(relistAllBtn);
+				//listingTable.prepend(relistAllBtn);
 			}
 		}
 
 		if(window.location.href.indexOf("?autolist") > -1) {
-			let productActionBar = document.querySelector(".product-action-bar")
+			let productActionBar = document.querySelector(".product-action-bar");
 
 			if(productActionBar) {
 				let listingBtn = productActionBar.firstChild.firstChild;
-				let evt = new Event('change', { bubbles: true });
-				//console.log(listingBtn.firstChild);
 				listingBtn.click();
-				let diyCheck = document.querySelector(".create-listing-diy input");
+
+				if(window.location.href.indexOf("&diy") > -1) {
+					let diyCheck = document.querySelector(".create-listing-diy input");
+					diyCheck.click();
+				}
 				let pricingChecks = document.querySelectorAll(".product-pricing-option");
 				let createListingBtn = document.querySelector(".create-listing-btn");
-
-				diyCheck.click();
 				
 				//console.log(pricingChecks);
 				for (let i=0; i<pricingChecks.length; i++) {
@@ -95,9 +116,12 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				}
 
 				for (let i=0; i<pricingChecks.length; i++) {
-					if(pricingChecks[i].innerText === "NMT") {
+					if(pricingChecks[i].innerText === "NMT" && ACCEPT_NMT) {
 						pricingChecks[i].firstChild.click();
-						break;
+					} else if(pricingChecks[i].innerText === "Bells" && ACCEPT_BELLS) {
+						pricingChecks[i].firstChild.click();
+					} else if(pricingChecks[i].innerText === "Wishlist Items" && ACCEPT_WISHLIST) {
+						pricingChecks[i].firstChild.click();
 					}
 				}
 
