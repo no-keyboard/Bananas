@@ -12,6 +12,7 @@
 const ACCEPT_NMT = true;
 const ACCEPT_BELLS = false;
 const ACCEPT_WISHLIST = false;
+const DEBUG = false;
 /////////////////////////////
 
 const container = document.querySelector('body');
@@ -36,7 +37,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				listings.forEach(listing => {
 					let listingUrl = listing.childNodes[0].firstElementChild.href;
 					//console.log(listing);
-					let listingImg = listing.querySelector("div .listing-item-link > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "");
+					let listingImg = listing.querySelector("div .listing-item-link > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "").replace("https://cdn.nookazon.com/miscellaneous/", "");
 					//console.log(listingImg);
 					let actionBtns = listing.querySelectorAll(".listing-action-bar > .listing-btn-container");
 					//console.log(removeBtn);
@@ -59,7 +60,9 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 							if(actionBtns[i].innerText === "Remove") {
 								console.log(actionBtns[i]);
 								//click the remove button
-								actionBtns[i].firstChild.click();
+								if(!DEBUG) {
+									actionBtns[i].firstChild.click();
+								}
 								break;
 							}
 						}
@@ -103,21 +106,24 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				let listingBtn = productActionBar.firstChild.firstChild;
 				listingBtn.click();
 
-				let variants = document.querySelector(".product-variants").childNodes;
-				console.log(variants);
+				let variantSection = document.querySelector(".product-variants");
+				
+				if(variantSection) {
+					let variants = variantSection.childNodes;				
 
-				for (let i=0; i<variants.length; i++) {
-					variantUrl = variants[i].firstChild.src;
-					//console.log(variants[i].firstChild.src);
-					variantImg = window.location.href.split("&").pop().split(";")[0];
-					console.log(variantImg);
-					if(variantUrl.indexOf(variantImg) > -1) {
-						variants[i].click();
-						break;
+					for (let i=0; i<variants.length; i++) {
+						variantUrl = variants[i].firstChild.src;
+						//console.log(variants[i].firstChild.src);
+						variantImg = window.location.href.split("&").pop().split(";")[0];
+						//console.log(variantImg);
+						if(variantUrl.indexOf(variantImg) > -1) {
+							variants[i].click();
+							break;
+						}
 					}
 				}
 
-				if(window.location.href.indexOf("&diy") > -1) {
+				if(window.location.href.indexOf(";diy") > -1) {
 					let diyCheck = document.querySelector(".create-listing-diy input");
 					diyCheck.click();
 				}
@@ -144,10 +150,14 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					}
 				}
 
-				createListingBtn.click();
+				if(!DEBUG) {
+					createListingBtn.click();
+				}
 				
 				setTimeout(() => {
-					window.close();
+					if(!DEBUG) {
+						window.close();
+					}
 				}, 200);
 			}
 		}
