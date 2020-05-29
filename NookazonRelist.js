@@ -57,7 +57,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					
 					relistBtn.innerHTML = "Relist";
 					relistBtn.classList.add("btn-alt");
-					relistBtn.style.marginLeft = "10px";
+					//relistBtn.style.marginLeft = "5px";
 					relistBtn.id = "relistBtn";
 					relistBtn.onclick = () => {
 						window.open(urlAppend, "_blank");
