@@ -12,6 +12,7 @@
 const ACCEPT_NMT = true;
 const ACCEPT_BELLS = false;
 const ACCEPT_WISHLIST = false;
+const LISTINGS_AUTO_REFRESH = true;
 const DEBUG = false;
 /////////////////////////////
 
@@ -69,10 +70,12 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 									//click the remove button
 									actionBtns[i].firstChild.click();
 
-									setTimeout(() => {
-										location.reload();
-									}, 200);
-								}
+									if(LISTINGS_AUTO_REFRESH) {
+										setTimeout(() => {
+											location.reload();
+										}, 200);
+									}
+								}	
 
 								break;
 							}
