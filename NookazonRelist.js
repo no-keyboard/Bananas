@@ -42,9 +42,12 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					let actionBtns = listing.querySelectorAll(".listing-action-bar > .listing-btn-container");
 					//console.log(removeBtn);
 					let relistBtn = document.createElement("button");
+					let relistBtnContainer = document.createElement("div");
 					let urlAppend = `${listingUrl}?autolist&${listingImg}`;
 					let diyFlag = false;
 					let listingName = listing.querySelector("div > div > div .listing-product-info > div .listing-name").innerText;
+
+					relistBtnContainer.classList.add("listing-btn-container");
 
 					if(listingName.indexOf("DIY Recipe") > -1) {
 						diyFlag = true;
@@ -53,16 +56,24 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					
 					relistBtn.innerHTML = "Relist";
 					relistBtn.classList.add("btn-alt");
-					relistBtn.id = "relistBtn"
+					relistBtn.style.marginLeft = "10px";
+					relistBtn.id = "relistBtn";
 					relistBtn.onclick = () => {
 						window.open(urlAppend, "_blank");
+						
 						for(let i=0; i<actionBtns.length; i++) {
 							if(actionBtns[i].innerText === "Remove") {
-								console.log(actionBtns[i]);
-								//click the remove button
+								//console.log(actionBtns[i]);
+								
 								if(!DEBUG) {
+									//click the remove button
 									actionBtns[i].firstChild.click();
+
+									setTimeout(() => {
+										location.reload();
+									}, 200);
 								}
+
 								break;
 							}
 						}
@@ -70,14 +81,16 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 
 					//console.log(listing.childNodes[1].childNodes.length);
 					if(listing.childNodes[1].childNodes.length === 2) {
-						listing.childNodes[1].append(relistBtn);
+						relistBtnContainer.append(relistBtn);
+						listing.childNodes[1].append(relistBtnContainer);
 					}
 
 					//console.log(urlAppend);
 					
 					listingUrls.push({
 						url: urlAppend,
-						diy: diyFlag});
+						diy: diyFlag
+					});
 				});
 
 				//console.log(listingUrls);
