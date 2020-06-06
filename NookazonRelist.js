@@ -36,9 +36,11 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				observer.disconnect();
 
 				listings.forEach(listing => {
-					let listingUrl = listing.childNodes[0].firstElementChild.href;
 					//console.log(listing);
-					let listingImg = listing.querySelector("div .listing-item-link > div > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "").replace("https://cdn.nookazon.com/miscellaneous/", "");
+					let listingInfoContainer = listing.querySelector("div .listing-item-link > div > a");
+					let listingUrl = listingInfoContainer.href;
+					//console.log(listingUrl);
+					let listingImg = listingInfoContainer.querySelector(".listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "").replace("https://cdn.nookazon.com/miscellaneous/", "");
 					//console.log(listingImg);
 					let actionBtns = listing.querySelectorAll(".listing-action-bar > .listing-btn-container");
 					//console.log(removeBtn);
