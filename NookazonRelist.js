@@ -11,7 +11,7 @@
 ///////CONFIGURATION/////////
 const ACCEPT_NMT = true;
 const ACCEPT_BELLS = false;
-const ACCEPT_WISHLIST = false;
+const ACCEPT_WISHLIST = true;
 const LISTINGS_AUTO_REFRESH = true;
 const DEBUG = false;
 /////////////////////////////
@@ -38,7 +38,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				listings.forEach(listing => {
 					let listingUrl = listing.childNodes[0].firstElementChild.href;
 					//console.log(listing);
-					let listingImg = listing.querySelector("div .listing-item-link > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "").replace("https://cdn.nookazon.com/miscellaneous/", "");
+					let listingImg = listing.querySelector("div .listing-item-link > div > a > .listing-img-container > img").src.replace("https://cdn.nookazon.com/housewares/", "").replace(".png", "").replace("https://cdn.nookazon.com/miscellaneous/", "");
 					//console.log(listingImg);
 					let actionBtns = listing.querySelectorAll(".listing-action-bar > .listing-btn-container");
 					//console.log(removeBtn);
@@ -54,18 +54,18 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 						diyFlag = true;
 						urlAppend = urlAppend.concat(";diy");
 					}
-					
+
 					relistBtn.innerHTML = "Relist";
 					relistBtn.classList.add("btn-alt");
 					//relistBtn.style.marginLeft = "5px";
 					relistBtn.id = "relistBtn";
 					relistBtn.onclick = () => {
 						window.open(urlAppend, "_blank");
-						
+
 						for(let i=0; i<actionBtns.length; i++) {
 							if(actionBtns[i].innerText === "Remove") {
 								//console.log(actionBtns[i]);
-								
+
 								if(!DEBUG) {
 									//click the remove button
 									actionBtns[i].firstChild.click();
@@ -75,7 +75,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 											location.reload();
 										}, 200);
 									}
-								}	
+								}
 
 								break;
 							}
@@ -89,7 +89,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 					}
 
 					//console.log(urlAppend);
-					
+
 					listingUrls.push({
 						url: urlAppend,
 						diy: diyFlag
@@ -123,9 +123,9 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				listingBtn.click();
 
 				let variantSection = document.querySelector(".product-variants");
-				
+
 				if(variantSection) {
-					let variants = variantSection.childNodes;				
+					let variants = variantSection.childNodes;
 
 					for (let i=0; i<variants.length; i++) {
 						variantUrl = variants[i].firstChild.src;
@@ -146,7 +146,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 
 				let pricingChecks = document.querySelectorAll(".product-pricing-option");
 				let createListingBtn = document.querySelector(".create-listing-btn");
-				
+
 				//console.log(pricingChecks);
 				for (let i=0; i<pricingChecks.length; i++) {
 					if(pricingChecks[i].innerText === "Ask for Offers") {
@@ -169,7 +169,7 @@ const observer = new MutationObserver(onMutate = mutationsList => {
 				if(!DEBUG) {
 					createListingBtn.click();
 				}
-				
+
 				setTimeout(() => {
 					if(!DEBUG) {
 						window.close();
