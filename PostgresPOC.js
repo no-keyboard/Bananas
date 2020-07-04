@@ -16,7 +16,9 @@ createRecord = async () => {
 
 	try {
 		const res = await client.query(`
-			INSERT INTO people(name, company) VALUES($1, $2) RETURNING *`,
+			INSERT INTO people(name, company) 
+			VALUES($1, $2) 
+			RETURNING *`,
 			['test insert', 'test insert company']
 			);
 		console.log("create result", res.rows);
@@ -65,7 +67,9 @@ deleteRecord = async () => {
 
 	try {
 		const res1 = await client.query(`
-									INSERT INTO people(name, company) VALUES($1, $2) RETURNING *`,
+									INSERT INTO people(name, company) 
+									VALUES($1, $2) 
+									RETURNING *`,
 									['name to delete', 'company']
 									);
 		console.log('inserted record', res1.rows);
