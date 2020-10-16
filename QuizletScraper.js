@@ -47,4 +47,4 @@
 	exportBtn.innerHTML = "Export Cards";
 	exportBtn.onclick = exportCards;
 	document.body.prepend(exportBtn);
-});
+})();
