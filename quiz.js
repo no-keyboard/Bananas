@@ -28,12 +28,14 @@ nextQuestion = async () => {
 	let correct = [];
 	const alpha = ['a', 'b', 'c', 'd', 'e'];
 	const questionIndex = Math.floor(Math.random() * 100);
+	const currentQuestion = questionSet[questionIndex];
 
-	console.log(`${i}. ${questionSet[questionIndex].question}`);
+	console.log(`${i}. ${currentQuestion.question}`);
 
 	try {
-		const res = await client.query(`SELECT * FROM answer WHERE related_to = ${questionIndex}`);
+		const res = await client.query(`SELECT * FROM answer WHERE related_to = ${currentQuestion.id}`);
 		answers = res.rows;
+		//console.log(answers);
 	} catch(err) {
 		console.error(err);
 	}
@@ -48,17 +50,18 @@ nextQuestion = async () => {
 
 	//console.log(`correct answers: ${correct.join(",")}`);
 
-	await rl.question(`${correct.length} answer(s): `, inputAnswers => {
+	rl.question(`${correct.length} answer(s): `, inputAnswers => {
 		if(inputAnswers === correct.join(",")) {
 			countCorrect++;
-			console.log('✅ \n');
+			console.log(`✅ \n`);
 		} else {
 			countWrong++;
-			console.log('❌ \n');
+			console.log(`❌ ${correct} \n`);
 		}
 
 		if(questionSet.length > 1) {
 			questionSet.splice(questionIndex, 1);
+			console.log(`Remaining: ${questionSet.length} | Correct: ${countCorrect} (${(countCorrect / i) * 100}%) \n`);
 			i++;
 			nextQuestion();
 		} else {
