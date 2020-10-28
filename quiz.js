@@ -9,6 +9,7 @@ const rl = readline.createInterface({
 });
 
 let questionSet = [];
+let wrongAnswers = [];
 let i = 1;
 let countCorrect = 0;
 let countWrong = 0;
@@ -27,17 +28,17 @@ nextQuestion = async () => {
 	let answers = [];
 	let correct = [];
 	const alpha = ['a', 'b', 'c', 'd', 'e'];
-	const questionIndex = Math.floor(Math.random() * 100);
+	const questionIndex = Math.floor(Math.random() * questionSet.length);
 	const currentQuestion = questionSet[questionIndex];
 
-	console.log(`${i}. ${currentQuestion.question}`);
-
 	try {
+		console.log(`${i}. ${currentQuestion.question}`);
 		const res = await client.query(`SELECT * FROM answer WHERE related_to = ${currentQuestion.id}`);
 		answers = res.rows;
 		//console.log(answers);
 	} catch(err) {
 		console.error(err);
+		console.error(currentQuestion, questionIndex);
 	}
 
 	answers.forEach((answer, i) => {
@@ -61,7 +62,7 @@ nextQuestion = async () => {
 
 		if(questionSet.length > 1) {
 			questionSet.splice(questionIndex, 1);
-			console.log(`Remaining: ${questionSet.length} | Correct: ${countCorrect} (${(countCorrect / i) * 100}%) \n`);
+			console.log(`Remaining: ${questionSet.length} | Correct: ${countCorrect} (${Number.parseFloat((countCorrect / i) * 100).toPrecision(4)}%) \n`);
 			i++;
 			nextQuestion();
 		} else {
@@ -73,7 +74,10 @@ nextQuestion = async () => {
 }
 
 logWrongAnswer = (question, correctAnswers) => {
-	//asdf
+	wrongAnswers.push({
+		question: question,
+		correct: correctAnswers
+	});
 }
 
 (async () => {
