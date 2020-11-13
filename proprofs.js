@@ -10,44 +10,60 @@
 
 (() => {
     let questionSet = [];
-    let i = 0;
+    let i = 1;
     const questionCount = document.querySelector("#question_area > div.qs_show_wrap > span").innerText.split("/")[1].trim();
-    const alphabet = ["a", "b", "c", "d", "e"];
     const getQuestion = () => {
     	setTimeout(() => {
-	    	let questionText = document.querySelector("#m_question_desc").innerText;
-	    	let answerBox = document.querySelector(".answer_boxes");
-	    	let nextQuestionBtn = document.querySelector("span[title='Next Question']");
-	    	let answerSet = [];
-	    	let j = 0;
+    		console.info(`Processing question ${i} of ${questionCount}`);
 
-	    	for(let answer of answerBox.querySelectorAll(".quiz_tablediv")) {
+    		let submitBtn = document.querySelector("div.new_bottom_next_btn");
+    		submitBtn.click();
+
+	    	let questionText = document.querySelector("span.after_question") ? document.querySelector("span.after_question").innerText : document.querySelector("#m_question_desc").innerText;
+	    	let answerBox = document.querySelector("div.answer_boxes");
+	    	let answerSet = [];
+	    	let notes = [];  		
+
+	    	for(let answer of answerBox.querySelectorAll("div.quiz_tablediv")) {
 	    		let answerText = answer.querySelector(".text_style").innerText
 	    			.replace("A. ", "")
 	    			.replace("B. ", "")
 	    			.replace("C. ", "")
 	    			.replace("D. ", "")
 	    			.replace("E. ", "");
+	    		let correct = false;
+
+	    		if(answer.querySelector("span.succ1")) {
+	    			correct = true;
+	    		}
 	    		
-	    		answerSet.push(`${alphabet[j]}. ${answerText}`);
-	    		
-	    		j++;
+	    		answerSet.push({
+	    			answer: answerText,
+	    			correct
+	    		});
+	    	}
+
+	    	if(parseInt(document.querySelector("p.quiz_takers_res").innerText) <= 70) {
+	    		notes.push(document.querySelector("p.quiz_takers_res").innerText);
+	    	}
+
+	    	if(answerSet.length != 4 && answerSet.length != 5) {
+	    		notes.push(`This question has ${answerSet.length} answers.`);
 	    	}
 
 	    	questionSet.push({
 	    		question: questionText,
 	    		answers: answerSet,
-	    		correct: ""
+	    		notes
 	    	});
 
-	    	if(i < questionCount) {
-	    		nextQuestionBtn.click();
+	    	if(i <= questionCount) {
 	    		getQuestion();
 	    		i++;
 	    	} else {
 	    		console.log(JSON.stringify(questionSet));
 	    	}
-	    }, 1000);
+	    }, 1250);
     }
 
     const startBtn = document.createElement("button");
