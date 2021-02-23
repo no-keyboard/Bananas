@@ -31,6 +31,17 @@
     	let correctAnswers = answer.split(",");
     	let parantheses = false;
 
+        //logic if answer is the answer letter + text
+        if(correctAnswers[0].length > 1) {
+            correctAnswers = [];
+
+            answerLetters.forEach(letter => {
+                if(answer.includes(`${letter.toUpperCase()}. `)) {
+                    correctAnswers.push(letter);
+                }
+            });
+        }
+
     	if(textBody.includes("A.")) {
     		questionText = textBody.slice(0, textBody.indexOf("A."));
     	} else if(textBody.includes("a)")) {
@@ -53,11 +64,15 @@
     			answerText = textBody.slice(0, textBody.indexOf(`${answerLetters[i + 1]})`));
     		}
 
-    		console.log(answerText);
-    		
+    		//console.log(answerText);
+
     		let correct = false;
 
-    		if(correctAnswers.includes(answerText.charAt(0).toLowerCase()) && correctAnswers.length > 0) {
+            // console.log(correctAnswers);
+
+            // console.log(answerText.charAt(0).toLowerCase());
+
+    		if((correctAnswers.includes(answerText.charAt(0).toLowerCase()) || correctAnswers.includes(answerText.charAt(0))) && correctAnswers.length > 0) {
     			correct = true;
     			delete correctAnswers[correctAnswers.indexOf(answer.charAt(0))];
     		}
