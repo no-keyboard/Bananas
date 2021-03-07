@@ -32,7 +32,7 @@
     	let parantheses = false;
 
         //logic if answer is the answer letter + text
-        if(correctAnswers[0].length > 1) {
+        if(correctAnswers[0].length > 6) {
             correctAnswers = [];
 
             answerLetters.forEach(letter => {
@@ -40,6 +40,9 @@
                     correctAnswers.push(letter);
                 }
             });
+            //logic if answer is separated by spaces
+        } else if(correctAnswers[0].length > 1) {
+            correctAnswers = answer.split(" ");
         }
 
     	if(textBody.includes("A.")) {
@@ -97,6 +100,19 @@
     	//console.log(answers);
     }
 
+    const answerValidator = answerSet => {
+        let noAnswersFlag = true;
+
+        for(let answer of answerSet) {
+            if(answer.correct) {
+                noAnswersFlag = false;
+                break;
+            }
+        }
+
+        return noAnswersFlag;
+    }
+
     const onMutate = mutationsList => {
     	mutationsList.forEach(mutation => {
     		//console.log(mutation.target.className);
@@ -111,7 +127,15 @@
 			let answers = card[1].querySelector("div").getAttribute("aria-label");
 			let questionAndAnswer = cardParser(textBody, answers);
 			validationBox.value = JSON.stringify(questionAndAnswer) + ",";
-			fullQuestionSet.push(questionAndAnswer);
+            if(fullQuestionSet.length === 0 || fullQuestionSet[fullQuestionSet.length - 1].question != questionAndAnswer.question) {
+                fullQuestionSet.push(questionAndAnswer);
+                console.info(JSON.stringify(fullQuestionSet));
+                console.info(`Question Set Size: ${fullQuestionSet.length}`);
+
+                if(answerValidator(questionAndAnswer.answers)) {
+                    console.error(`WARNING! This question has no valid answers.`);
+                }
+            }
     	});
     }
 
